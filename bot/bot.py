@@ -10,6 +10,8 @@ import random
 
 client = commands.Bot(command_prefix = '!')
 
+class User:
+    
 
 @client.event
 async def on_ready():
