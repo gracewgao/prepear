@@ -7,7 +7,9 @@ from discord.ext import commands
 import json
 import random
 
+
 client = commands.Bot(command_prefix = '!')
+
 
 @client.event
 async def on_ready():
@@ -30,6 +32,20 @@ async def _leetcode(ctx, difficulty):
         url = 'https://leetcode.com/problems/' + name + '/'
 
     await ctx.send(f'Try this one! {url}')
+
+@client.event
+async def on_message(message):
+    """
+    members = []
+    if message.content.startswith('!member'):
+        for guild in client.guilds:
+            for member in guild.members:
+                members.append(member)
+    print(members)
+    """
+    if message.content.startswith('!hi'):
+        await message.author.send('👋')
+
 
 # sets up the bot
 class DiscordBot(object):
