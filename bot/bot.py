@@ -54,7 +54,7 @@ async def on_message(message):
 
 @client.command(aliases=['yahoo'])
 async def _yahoo(ctx, difficulty):
-    await ctx.send(f'{client.user.name}')
+    await message.author.send('👋')
 
 # sets up the bot
 class DiscordBot(object):
