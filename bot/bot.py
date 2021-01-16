@@ -14,6 +14,14 @@ def on_ready():
     print('-'*20)
 
 
+from discord.ext import commands
+bot = commands.Bot(command_prefix='>')
+@bot.command()
+async def ping(ctx):
+    await ctx.send('pong')
+
+
+
 @client.event
 @asyncio.coroutine
 def on_message(message):
