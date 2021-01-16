@@ -70,6 +70,7 @@ async def on_message(message):
     if message.content.startswith('!leet'):
         userID = message.author
         await message.author.send('Welcome!')
+        await message.author.send('wallo')
 
 
 # sets up the bot
