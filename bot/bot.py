@@ -14,7 +14,6 @@ class User:
     username: ""
     level: ""
     completed: [[],[],[]]
-    lang: []
     plang: []
 
 
