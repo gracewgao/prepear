@@ -1,0 +1,27 @@
+{
+    "easy": 
+    [
+    "two-sum",
+    "shuffle-the-array",
+    "count-the-number-of-consistent-strings",
+    "count-of-matches-in-tournament",
+    "design-an-ordered-stream"
+    ], 
+    "medium": 
+    [
+    "3sum-with-multiplicity",
+    "snapshot-array",
+    "coordinate-with-maximum-network-quality",
+    "number-of-ways-where-square-of-number-is-equal-to-product-of-two-numbers",
+    "house-robber-ii"
+    ], 
+    "hard": 
+    [
+    "strong-password-checker",
+    "minimum-number-of-refueling-stops",
+    "escape-a-large-maze",
+    "restore-the-array",
+    "max-sum-of-rectangle-no-larger-than-k"
+    ]
+}
+    
