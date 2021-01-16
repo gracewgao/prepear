@@ -10,6 +10,12 @@ import random
 
 client = commands.Bot(command_prefix = '!')
 
+class User:
+    username: ""
+    level: ""
+    completed: [[],[],[]]
+    plang: []
+
 
 @client.event
 async def on_ready():
@@ -61,14 +67,7 @@ async def on_raw_reaction_remove(payload):
         else:
             print("Role not found.")
 
-
-@client.command(aliases=['leet'])
-async def _leet(ctx):
-    responses = ["yoyo",
-                 "bruh"]
-
     await ctx.send(f' Ans: {random.choice(responses)}')
-
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
     with open("bot/leetcode.json") as f:
