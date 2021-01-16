@@ -2,10 +2,10 @@ import os
 import discord
 import asyncio
 import configparser
-from bot.commands import Command
-import discord   
-import random
+import discord
 from discord.ext import commands
+import json
+import random
 
 client = commands.Bot(command_prefix = '!')
 
@@ -20,6 +20,16 @@ async def _leet(ctx):
                  "bruh"]
 
     await ctx.send(f' Ans: {random.choice(responses)}')
+
+@client.command(aliases=['leetcode'])
+async def _leetcode(ctx, difficulty):
+    with open("bot/leetcode.json") as f:
+        questions = json.load(f)
+        rand = random.randint(0, len(questions[difficulty]))
+        name = questions[difficulty][rand]
+        url = 'https://leetcode.com/problems/' + name + '/'
+
+    await ctx.send(f'Try this one! {url}')
 
 # sets up the bot
 class DiscordBot(object):
