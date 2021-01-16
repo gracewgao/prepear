@@ -7,8 +7,8 @@ from discord.ext import commands
 import json
 import random
 
-client = commands.Bot(command_prefix = '!')
 
+client = commands.Bot(command_prefix = '!')
 
 
 @client.event
@@ -65,6 +65,13 @@ async def _leetcode(ctx, difficulty):
         count += 1
 
     await ctx.send(f'Try this one!\n{leetcode_url}\nYou can get started here:\n{code_url}')
+
+@client.event
+async def on_message(message):
+    if message.content.startswith('!leet'):
+        userID = message.author
+        await message.author.send('Welcome!')
+
 
 # sets up the bot
 class DiscordBot(object):
