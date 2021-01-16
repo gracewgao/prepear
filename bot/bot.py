@@ -11,6 +11,7 @@ import random
 client = commands.Bot(command_prefix = '!')
 
 
+
 @client.event
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
@@ -27,11 +28,16 @@ async def _leet(ctx):
 async def _leetcode(ctx, difficulty):
     with open("bot/leetcode.json") as f:
         questions = json.load(f)
-        rand = random.randint(0, len(questions[difficulty]))
+        rand = random.randint(0, len(questions[difficulty]) - 1)
         name = questions[difficulty][rand]
-        url = 'https://leetcode.com/problems/' + name + '/'
+        leetcode_url = 'https://leetcode.com/problems/' + name + '/'
 
-    await ctx.send(f'Try this one! {url}')
+        count = 0
+        code_url = 'https://codeshare.io/prepear-' + name + '-' + str(count)
+        # todo: save count into database
+        count += 1
+
+    await ctx.send(f'Try this one!\n{leetcode_url}\nYou can get started here:\n{code_url}')
 
 @client.event
 async def on_message(message):
