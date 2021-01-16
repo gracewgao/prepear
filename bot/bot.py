@@ -15,14 +15,7 @@ client = commands.Bot(command_prefix = '!')
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
-"""
-@client.command(aliases=['leet'])
-async def _leet(ctx):
-    responses = ["yoyo",
-                 "bruh"]
 
-    await ctx.send(f' Ans: {random.choice(responses)}')
-"""
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
     with open("bot/leetcode.json") as f:
@@ -40,17 +33,9 @@ async def _leetcode(ctx, difficulty):
 
 @client.event
 async def on_message(message):
-    """
-    members = []
-    if message.content.startswith('!member'):
-        for guild in client.guilds:
-            for member in guild.members:
-                members.append(member)
-    print(members)
-    """
     if message.content.startswith('!leet'):
         userID = message.author
-        await message.author.send('Welcome!' + userID)
+        await message.author.send('Welcome!')
 
 
 # sets up the bot
