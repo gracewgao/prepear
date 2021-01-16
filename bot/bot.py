@@ -49,7 +49,7 @@ async def on_message(message):
     print(members)
     """
     if message.content.startswith('!leet'):
-        await message.author.send('Welcome! {client.user.name}#{client.user.id}👋')
+        await message.author.send('Welcome!'.format(client.user.name, client.user.id))
 
 
 # sets up the bot
