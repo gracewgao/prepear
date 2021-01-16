@@ -11,7 +11,12 @@ import random
 client = commands.Bot(command_prefix = '!')
 
 class User:
-    
+    username: ""
+    level: ""
+    completed: [[],[],[]]
+    lang: []
+    plang: []
+
 
 @client.event
 async def on_ready():
@@ -52,7 +57,6 @@ async def _leet(ctx):
                  "bruh"]
 
     await ctx.send(f' Ans: {random.choice(responses)}')
-
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
     with open("bot/leetcode.json") as f:
