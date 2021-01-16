@@ -87,7 +87,8 @@ async def _leetcode(ctx, difficulty):
 async def on_message(message):
     if message.content.startswith('!leet'):
         await message.author.send('Welcome!')
-    await message.author.send('Kms')
+    if message.content.startswith('!leet'):
+        
 
 
 # sets up the bot
