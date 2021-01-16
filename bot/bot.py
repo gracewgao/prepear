@@ -16,6 +16,34 @@ async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
 
+@client.event
+async def on_raw_reaction_add(payload):
+    message_id = payload.message_id
+    if message_id == 800124907920293939:
+        guild_id = payload.guild_id
+        guild = client.get_guild(payload.guild_id)
+
+        if payload.emoji.name == 'cpp':
+            role = discord.utils.get(guild.roles, name='C++')
+        else:
+            role = discord.utils.get(guild.roles, name=payload.emoji.name)
+
+        if role is not None:
+            member = payload.member
+            if member is not None:
+                await member.add_roles(role)
+                print("done")
+            else:
+                print("Member not found.")
+        else:
+            print("Role not found.")
+
+
+@client.event
+async def on_raw_reaction_remove(payload):
+    pass
+
+
 @client.command(aliases=['leet'])
 async def _leet(ctx):
     responses = ["yoyo",
