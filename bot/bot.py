@@ -38,6 +38,10 @@ async def _leetcode(ctx, difficulty):
 
     await ctx.send(f'Try this one!\n{leetcode_url}\nYou can get started here:\n{code_url}')
 
+@client.command(aliases=['yahoo'])
+async def _yahoo(ctx, difficulty):
+    await ctx.send(f'{client.user.name}')
+
 # sets up the bot
 class DiscordBot(object):
     def __init__(self):
