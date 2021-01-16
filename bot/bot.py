@@ -49,12 +49,6 @@ async def on_raw_reaction_add(payload):
 async def on_raw_reaction_remove(payload):
     pass
 
-
-@client.command(aliases=['leet'])
-async def _leet(ctx):
-    responses = ["yoyo",
-                 "bruh"]
-
     await ctx.send(f' Ans: {random.choice(responses)}')
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
