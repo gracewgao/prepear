@@ -11,19 +11,18 @@ import random
 client = commands.Bot(command_prefix = '!')
 
 
-
 @client.event
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
-
+"""
 @client.command(aliases=['leet'])
 async def _leet(ctx):
     responses = ["yoyo",
                  "bruh"]
 
     await ctx.send(f' Ans: {random.choice(responses)}')
-
+"""
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
     with open("bot/leetcode.json") as f:
@@ -49,12 +48,9 @@ async def on_message(message):
                 members.append(member)
     print(members)
     """
-    if message.content.startswith('!hi'):
-        await message.author.send('👋')
+    if message.content.startswith('!leet'):
+        await message.author.send('Welcome! {client.user.name}#{client.user.id}👋')
 
-@client.command(aliases=['yahoo'])
-async def _yahoo(ctx, difficulty):
-    await ctx.send(f'Hello there!')
 
 # sets up the bot
 class DiscordBot(object):
