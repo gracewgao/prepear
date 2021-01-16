@@ -47,7 +47,25 @@ async def on_raw_reaction_add(payload):
 
 @client.event
 async def on_raw_reaction_remove(payload):
-    pass
+    message_id = payload.message_id
+    if message_id == 800124907920293939:
+        guild_id = payload.guild_id
+        guild = client.get_guild(payload.guild_id)
+
+        if payload.emoji.name == 'cpp':
+            role = discord.utils.get(guild.roles, name='C++')
+        else:
+            role = discord.utils.get(guild.roles, name=payload.emoji.name)
+
+        if role is not None:
+            member = payload.member
+            if member is not None:
+                await member.remove_roles(role)
+                print("done")
+            else:
+                print("Member not found.")
+        else:
+            print("Role not found.")
 
     await ctx.send(f' Ans: {random.choice(responses)}')
 @client.command(aliases=['leetcode'])
