@@ -7,8 +7,7 @@ from discord.ext import commands
 import json
 import random
 
-from .database import get_question
-
+from .database import *
 
 client = commands.Bot(command_prefix = '!')
 
@@ -16,25 +15,18 @@ client = commands.Bot(command_prefix = '!')
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
-"""
-@client.command(aliases=['leet'])
-async def _leet(ctx):
-    responses = ["yoyo",
-                 "bruh"]
 
-    await ctx.send(f' Ans: {random.choice(responses)}')
-"""
+
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
-    # with open("bot/leetcode.json") as f:
-    #     questions = json.load(f)
-    #     rand = random.randint(0, len(questions[difficulty]) - 1)
-    #     name = questions[difficulty][rand]
     message = get_question(difficulty)
-    # leetcode_url = 'https://leetcode.com/problems/' + name + '/'
-    # code_url = 'https://codeshare.io/prepear-' + name + '-' + unique
-
     await ctx.send(message)
+
+    channel2 = await member.guild.create_voice_channel(name,category=category)
+    channelID = channel2.id
+    await member.move_to(channel2)
+    await channel2.set_permissions(self.bot.user, connect=True,read_messages=True)
+    await channel2.edit(name= name, user_limit = limit)
 
 # @client.event
 # async def on_message(message):
