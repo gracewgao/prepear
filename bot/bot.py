@@ -12,7 +12,6 @@ from .database import get_question
 
 client = commands.Bot(command_prefix = '!')
 
-
 @client.event
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
@@ -37,19 +36,19 @@ async def _leetcode(ctx, difficulty):
 
     await ctx.send(message)
 
-@client.event
-async def on_message(message):
-    """
-    members = []
-    if message.content.startswith('!member'):
-        for guild in client.guilds:
-            for member in guild.members:
-                members.append(member)
-    print(members)
-    """
-    if message.content.startswith('!leet'):
-        userID = message.author
-        await message.author.send('Welcome!' + userID)
+# @client.event
+# async def on_message(message):
+#     """
+#     members = []
+#     if message.content.startswith('!member'):
+#         for guild in client.guilds:
+#             for member in guild.members:
+#                 members.append(member)
+#     print(members)
+#     """
+#     if message.content.startswith('!leet'):
+#         userID = message.author
+#         await message.author.send('Welcome!' + userID)
 
 
 # sets up the bot
