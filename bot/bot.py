@@ -7,6 +7,8 @@ from discord.ext import commands
 import json
 import random
 
+from .database import get_question
+
 
 client = commands.Bot(command_prefix = '!')
 
@@ -25,18 +27,15 @@ async def _leet(ctx):
 """
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
-    with open("bot/leetcode.json") as f:
-        questions = json.load(f)
-        rand = random.randint(0, len(questions[difficulty]) - 1)
-        name = questions[difficulty][rand]
-        leetcode_url = 'https://leetcode.com/problems/' + name + '/'
+    # with open("bot/leetcode.json") as f:
+    #     questions = json.load(f)
+    #     rand = random.randint(0, len(questions[difficulty]) - 1)
+    #     name = questions[difficulty][rand]
+    message = get_question(difficulty)
+    # leetcode_url = 'https://leetcode.com/problems/' + name + '/'
+    # code_url = 'https://codeshare.io/prepear-' + name + '-' + unique
 
-        count = 0
-        code_url = 'https://codeshare.io/prepear-' + name + '-' + str(count)
-        # todo: save count into database
-        count += 1
-
-    await ctx.send(f'Try this one!\n{leetcode_url}\nYou can get started here:\n{code_url}')
+    await ctx.send(message)
 
 @client.event
 async def on_message(message):
