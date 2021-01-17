@@ -43,10 +43,15 @@ async def deletevc(ctx,vc: discord.VoiceChannel):
         
 @client.event
 async def on_raw_reaction_add(payload):
+
+    add_user(payload.user_id)
+
     message_id = payload.message_id
     if message_id == 800124907920293939:
         guild_id = payload.guild_id
         guild = client.get_guild(payload.guild_id)
+
+        add_language(payload.user_id, payload.emoji.name)
 
         if payload.emoji.name == 'cpp':
             role = discord.utils.get(guild.roles, name='C++')
@@ -63,65 +68,17 @@ async def on_raw_reaction_add(payload):
         else:
             print("Role not found.")
 
-
-@client.event
-async def on_raw_reaction_remove(payload):
-    message_id = payload.message_id
-    if message_id == 800124907920293939:
-        guild_id = payload.guild_id
-        guild = client.get_guild(payload.guild_id)
-
-        if payload.emoji.name == 'cpp':
-            role = discord.utils.get(guild.roles, name='C++')
-        else:
-            role = discord.utils.get(guild.roles, name=payload.emoji.name)
-
-        if role is not None:
-            member = payload.member
-            if member is not None:
-                await member.remove_roles(role)
-                print("done")
-            else:
-                print("Member not found.")
-        else:
-            print("Role not found.")
-
-    await ctx.send(f' Ans: {random.choice(responses)}')
-
     
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
-    message = get_question(difficulty)
+    message = check_pear(difficulty)
     await ctx.send(message)
 
-    channel2 = await member.guild.create_voice_channel(name,category=category)
-    channelID = channel2.id
-    await member.move_to(channel2)
-    await channel2.set_permissions(self.bot.user, connect=True,read_messages=True)
-    await channel2.edit(name= name, user_limit = limit)
 
+@client.event
+async def on_message(message):
+    add_user(message.author)
 
-# @client.event
-# async def on_message(message):
-#     """
-#     members = []
-#     if message.content.startswith('!member'):
-#         for guild in client.guilds:
-#             for member in guild.members:
-#                 members.append(member)
-#     print(members)
-#     """
-#     if message.content.startswith('!leet'):
-#         userID = message.author
-#         await message.author.send('Welcome!' + userID)
-
-
-async def ask_difficulty():
-    #ask for the difficulty
-async def ask_plang():
-    #asking for languages process
-async def match():
-    # matching process
 
 # sets up the bot
 class DiscordBot(object):

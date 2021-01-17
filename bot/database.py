@@ -18,6 +18,7 @@ def setup_db():
 
     cur.execute("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username TEXT, waiting INT)")
     cur.execute("CREATE TABLE IF NOT EXISTS leetcode (id SERIAL PRIMARY KEY, name TEXT, difficulty TEXT, completed INT)")
+    # languages stores many-to-many relations between users and lanugages 
     cur.execute("CREATE TABLE IF NOT EXISTS languages (user_id SERIAL PRIMARY KEY, language TEXT)")
 
     with open("bot/leetcode.json") as f:
@@ -31,8 +32,10 @@ def add_user(username):
     cur.execute(f"UPSERT INTO users (username) VALUES ('{username}') RETURNING id")
 
 
-def add_language(user_id, language):
-     cur.execute(f"INSERT INTO (user_id, language) VALUES ('{user_id}', '{language}')")
+def add_language(username, language):
+    user = cur.execute(f"SELECT id from users WHERE username='{username}'")
+    user_id = cur.fetchone()
+    cur.execute(f"INSERT INTO languages (user_id, language) VALUES ('{user_id}', '{language}')")
 
 
 def get_question(difficulty):
@@ -52,10 +55,6 @@ def get_question(difficulty):
     return message
 
 
-def add_to_queue(username, difficulty):
-    cur.execute(f"UPDATE users SET waiting={difficulty} WHERE id='{username}'")
-
-
 # makes pear if possible, otherwise adds to waiting list
 def check_pear(username, difficulty):
 
@@ -68,31 +67,49 @@ def check_pear(username, difficulty):
 
     for user in users:
         match_set = get_languages(user[0])
-        # if there are matching languages, pairs them up
+        # if there are matching languages, pairs them up 
         if ref_set.intersection(match_set):
             # makes pairing
-            pass
-        else:
-            add_to_queue(username, difficulty)
+            message = "It's a match: " + user[1] + " and " + username
+            message += f'\n":pear:" up with @{username} to solve your challenge at the codeshare link!\n\n'
+            message += get_question()
+            return message
+
+    # adds to queue if no one available
+    cur.execute(f"UPDATE users SET waiting={difficulty} WHERE id='{username}'")
+    message = "Got it, thanks! We'll match you up with the next available match."
+    return message
 
 
-def get_languages():
-    cur.execute(f"SELECT language from languages WHERE user_id='{user_id}' GROUP BY user_id")
-    languages = cur.fetchall()
-    lang_set = set(languages)
+def get_languages(user_id):
+    cur.execute(f"SELECT STRING_AGG(language, ', ') from languages WHERE user_id='{user_id}' GROUP BY user_id")
+    languages = cur.fetchone()
+    lang_set = set(languages.split(", "))
     return lang_set
 
 
-def get_users():
-    cur.execute("SELECT id, username FROM users")
-    users = cur.fetchall()
-    return users
+# methods below are for testing:
+
+# def print_users():
+#     cur.execute("SELECT id, username, waiting FROM users")
+#     users = cur.fetchall()
+
+#     for user in users:
+#         print(' '.join(str(i) for i in user))
+#         lang = get_languages(user[0])
+#         print(' '.join(str(i) for i in lang))
+
+#     return users
 
 
-def get_questions():
-    cur.execute("SELECT name, difficulty, completed FROM leetcode")
-    questions = cur.fetchall()
-    return questions
+# def print_questions():
+#     cur.execute("SELECT name, difficulty, completed FROM leetcode")
+#     questions = cur.fetchall()
+
+#     for question in questions:
+#         print(' '.join(str(i) for i in question))
+
+#     return questions
 
 
 def close_db():
@@ -101,6 +118,3 @@ def close_db():
 
 
 setup_db()
-
-users = get_users()
-questions = get_questions()
