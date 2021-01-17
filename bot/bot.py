@@ -7,32 +7,17 @@ from discord.ext import commands
 import json
 import random
 
+from .database import *
 
 client = commands.Bot(command_prefix = '!')
 
-class Object:
-   def __init__(self, **attributes):
-      self.__dict__.update(attributes)
-
-class User:
-    level = ""
-    completed = Object(
-        easy = [False, False, False, False, False],
-        medium = [False, False, False, False, False],
-        hard = [False, False, False, False, False]
-    )
-    plang = Object(
-        python = False,
-        js = False,
-        cpp = False,
-        java = False
-    )
 
 @client.event
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
 
+    
 @client.command()
 async def createvc(ctx, channelName):
     guild = ctx.guild
@@ -44,6 +29,7 @@ async def createvc(ctx, channelName):
         await guild.create_voice_channel(name=channelName)
         await ctx.send(embed=mbed)
 
+        
 @client.command()
 async def deletevc(ctx,vc: discord.VoiceChannel):
     mbed = discord.Embed(
@@ -54,12 +40,18 @@ async def deletevc(ctx,vc: discord.VoiceChannel):
         await ctx.send(embed=mbed)
         await vc.delete()
 
+        
 @client.event
 async def on_raw_reaction_add(payload):
+
+    add_user(payload.user_id)
+
     message_id = payload.message_id
     if message_id == 800124907920293939:
         guild_id = payload.guild_id
         guild = client.get_guild(payload.guild_id)
+
+        add_language(payload.user_id, payload.emoji.name)
 
         if payload.emoji.name == 'cpp':
             role = discord.utils.get(guild.roles, name='C++')
@@ -76,72 +68,18 @@ async def on_raw_reaction_add(payload):
         else:
             print("Role not found.")
 
-
-@client.event
-async def on_raw_reaction_remove(payload):
-    message_id = payload.message_id
-    if message_id == 800124907920293939:
-        guild_id = payload.guild_id
-        guild = client.get_guild(payload.guild_id)
-
-        if payload.emoji.name == 'cpp':
-            role = discord.utils.get(guild.roles, name='C++')
-        else:
-            role = discord.utils.get(guild.roles, name=payload.emoji.name)
-
-        if role is not None:
-            member = payload.member
-            if member is not None:
-                await member.remove_roles(role)
-                print("done")
-            else:
-                print("Member not found.")
-        else:
-            print("Role not found.")
-
-    await ctx.send(f' Ans: {random.choice(responses)}')
+    
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
-    with open("bot/leetcode.json") as f:
-        questions = json.load(f)
-        rand = random.randint(0, len(questions[difficulty]) - 1)
-        name = questions[difficulty][rand]
-        leetcode_url = 'https://leetcode.com/problems/' + name + '/'
+    message = check_pear(difficulty)
+    await ctx.send(message)
 
-        count = 0
-        code_url = 'https://codeshare.io/prepear-' + name + '-' + str(count)
-        # todo: save count into database
-        count += 1
-
-    await ctx.send(f'Try this one!\n{leetcode_url}\nYou can get started here:\n{code_url}')
 
 @client.event
 async def on_message(message):
-    if message.content.startswith('!leet'):
-        await message.author.send('Welcome! {}'.format(message.author))
-        print("hello!")
-        f = open('./users.json')
-        users = json.load(f)
-        f.close()
-        existing = False
-        for (k, v) in users.items():
-            if k == message.author:
-                existing = True
-        if existing == True:
-            await message.author.send('oof')
-        else:
-            data = json.load('users.json')
-            data[message.author] = User()
-            await message.author.send('YES BTCH IT WORKED')
-            #ask for difficulty
-"""
-async def ask_difficulty():
-    #ask for the difficulty
-async def ask_plang():
-    #asking for languages process
-async def match():
-    # matching process
-"""
+    add_user(message.author)
+
+
 # sets up the bot
 class DiscordBot(object):
     def __init__(self):
