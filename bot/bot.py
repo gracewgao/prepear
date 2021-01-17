@@ -22,6 +22,27 @@ async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
 
+@client.command()
+async def createvc(ctx, channelName):
+    guild = ctx.guild
+    mbed = discord.Embed(
+        title = 'Success!',
+        description = f'{channelName} has sucessfully been created!'
+    )
+    if ctx.author.guild_permissions.manage_channels:
+        await guild.create_voice_channel(name=channelName)
+        await ctx.send(embed=mbed)
+
+@client.command()
+async def deletevc(ctx,vc: discord.VoiceChannel):
+    mbed = discord.Embed(
+        title = 'Success!',
+        description = f'{vc} has sucessfully been deleted!'
+    )
+    if ctx.author.guild_permissions.manage_channels:
+        await ctx.send(embed=mbed)
+        await vc.delete()
+
 @client.event
 async def on_raw_reaction_add(payload):
     message_id = payload.message_id
@@ -87,8 +108,6 @@ async def _leetcode(ctx, difficulty):
 async def on_message(message):
     if message.content.startswith('!leet'):
         await message.author.send('Welcome!')
-    if message.content.startswith('!leet'):
-        
 
 
 # sets up the bot
