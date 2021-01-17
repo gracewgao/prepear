@@ -10,17 +10,29 @@ import random
 
 client = commands.Bot(command_prefix = '!')
 
-class User:
-    username: ""
-    level: ""
-    completed: [[],[],[]]
-    plang: []
+class Object:
+   def __init__(self, **attributes):
+      self.__dict__.update(attributes)
 
+class User:
+    level = ""
+    completed = Object(
+        easy = [False, False, False, False, False],
+        medium = [False, False, False, False, False],
+        hard = [False, False, False, False, False]
+    )
+    plang = Object(
+        python = False,
+        js = False,
+        cpp = False,
+        java = False
+    )
 
 @client.event
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
+
 
 @client.event
 async def on_raw_reaction_add(payload):
@@ -86,11 +98,30 @@ async def _leetcode(ctx, difficulty):
 @client.event
 async def on_message(message):
     if message.content.startswith('!leet'):
-        await message.author.send('Welcome!')
-    if message.content.startswith('!leet'):
-        
-
-
+        await message.author.send('Welcome! {}'.format(message.author))
+        print("hello!")
+        f = open('./users.json')
+        users = json.load(f)
+        f.close()
+        existing = False
+        for (k, v) in users.items():
+            if k == message.author:
+                existing = True
+        if existing == True:
+            await message.author.send('oof')
+        else:
+            data = json.load('users.json')
+            data[message.author] = User()
+            await message.author.send('YES BTCH IT WORKED')
+            #ask for difficulty
+"""
+async def ask_difficulty():
+    #ask for the difficulty
+async def ask_plang():
+    #asking for languages process
+async def match():
+    # matching process
+"""
 # sets up the bot
 class DiscordBot(object):
     def __init__(self):
