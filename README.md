@@ -1,8 +1,11 @@
-<div align="center">
 <p align="center>
-  <img src="screenshots/prepear.jpg" alt="logo" width="300px" />
+          
+  <img src="screenshots/logo.jpg" alt="logo" width="300px" />
+  
 </p>
-                                                           
+                                                          
+<div align="center">
+                   
 # prepear
 
 </div>
@@ -53,6 +56,9 @@ To try it out for yourself:
     ```bash
     pip install -r requirements.txt
     ```
+
+
+1. Set up CockroachDB with psycopg2 with the instructions [here](https://www.cockroachlabs.com/docs/stable/build-a-python-app-with-cockroachdb.html)
 
 
 1. Start the app and enter your Discord Bot token when prompted.
