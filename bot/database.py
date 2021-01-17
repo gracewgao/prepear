@@ -17,15 +17,16 @@ cur = conn.cursor()
 def setup_db():
 
     cur.execute("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username TEXT, waiting INT)")
-    cur.execute("CREATE TABLE IF NOT EXISTS leetcode (id SERIAL PRIMARY KEY, name TEXT, difficulty TEXT, completed INT)")
     # languages stores many-to-many relations between users and lanugages 
     cur.execute("CREATE TABLE IF NOT EXISTS languages (user_id SERIAL PRIMARY KEY, language TEXT)")
 
-    with open("bot/leetcode.json") as f:
-        levels = json.load(f)
-        for level in levels:
-            for q in levels[level]:
-                cur.execute(f"UPSERT INTO leetcode (name, difficulty, completed) VALUES ('{q}', '{level}', 0) RETURNING id")
+    # to fill the database for the first time
+    # cur.execute("CREATE TABLE IF NOT EXISTS leetcode (id SERIAL PRIMARY KEY, name TEXT, difficulty TEXT, completed INT)")
+    # with open("bot/leetcode.json") as f:
+    #     levels = json.load(f)
+    #     for level in levels:
+    #         for q in levels[level]:
+    #             cur.execute(f"UPSERT INTO leetcode (name, difficulty, completed) VALUES ('{q}', '{level}', 0) RETURNING id")
 
 
 def add_user(username):
