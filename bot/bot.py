@@ -7,32 +7,17 @@ from discord.ext import commands
 import json
 import random
 
+from .database import *
 
 client = commands.Bot(command_prefix = '!')
 
-class Object:
-   def __init__(self, **attributes):
-      self.__dict__.update(attributes)
-
-class User:
-    level = ""
-    completed = Object(
-        easy = [False, False, False, False, False],
-        medium = [False, False, False, False, False],
-        hard = [False, False, False, False, False]
-    )
-    plang = Object(
-        python = False,
-        js = False,
-        cpp = False,
-        java = False
-    )
 
 @client.event
 async def on_ready():
     print('Logged in as: {0} - {1}'.format(client.user.name, client.user.id))
     print('-'*20)
 
+    
 @client.command()
 async def createvc(ctx, channelName):
     guild = ctx.guild
@@ -44,6 +29,7 @@ async def createvc(ctx, channelName):
         await guild.create_voice_channel(name=channelName)
         await ctx.send(embed=mbed)
 
+        
 @client.command()
 async def deletevc(ctx,vc: discord.VoiceChannel):
     mbed = discord.Embed(
@@ -54,6 +40,7 @@ async def deletevc(ctx,vc: discord.VoiceChannel):
         await ctx.send(embed=mbed)
         await vc.delete()
 
+        
 @client.event
 async def on_raw_reaction_add(payload):
     message_id = payload.message_id
@@ -100,48 +87,42 @@ async def on_raw_reaction_remove(payload):
             print("Role not found.")
 
     await ctx.send(f' Ans: {random.choice(responses)}')
+
+    
 @client.command(aliases=['leetcode'])
 async def _leetcode(ctx, difficulty):
-    with open("bot/leetcode.json") as f:
-        questions = json.load(f)
-        rand = random.randint(0, len(questions[difficulty]) - 1)
-        name = questions[difficulty][rand]
-        leetcode_url = 'https://leetcode.com/problems/' + name + '/'
+    message = get_question(difficulty)
+    await ctx.send(message)
 
-        count = 0
-        code_url = 'https://codeshare.io/prepear-' + name + '-' + str(count)
-        # todo: save count into database
-        count += 1
+    channel2 = await member.guild.create_voice_channel(name,category=category)
+    channelID = channel2.id
+    await member.move_to(channel2)
+    await channel2.set_permissions(self.bot.user, connect=True,read_messages=True)
+    await channel2.edit(name= name, user_limit = limit)
 
-    await ctx.send(f'Try this one!\n{leetcode_url}\nYou can get started here:\n{code_url}')
 
-@client.event
-async def on_message(message):
-    if message.content.startswith('!leet'):
-        await message.author.send('Welcome! {}'.format(message.author))
-        print("hello!")
-        f = open('./users.json')
-        users = json.load(f)
-        f.close()
-        existing = False
-        for (k, v) in users.items():
-            if k == message.author:
-                existing = True
-        if existing == True:
-            await message.author.send('oof')
-        else:
-            data = json.load('users.json')
-            data[message.author] = User()
-            await message.author.send('YES BTCH IT WORKED')
-            #ask for difficulty
-"""
+# @client.event
+# async def on_message(message):
+#     """
+#     members = []
+#     if message.content.startswith('!member'):
+#         for guild in client.guilds:
+#             for member in guild.members:
+#                 members.append(member)
+#     print(members)
+#     """
+#     if message.content.startswith('!leet'):
+#         userID = message.author
+#         await message.author.send('Welcome!' + userID)
+
+
 async def ask_difficulty():
     #ask for the difficulty
 async def ask_plang():
     #asking for languages process
 async def match():
     # matching process
-"""
+
 # sets up the bot
 class DiscordBot(object):
     def __init__(self):
