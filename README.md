@@ -74,9 +74,9 @@ To try it out for yourself:
     
 ### Quick Preview
 Here's a glimpse into what it looks like! <br /><br />
-<img src="screenshots/1.jpg" alt="Screen 1" width="200px">
-<img src="screenshots/2.jpg" alt="Screen 2" width="200px">
-<img src="screenshots/3.jpg" alt="Screen 3" width="200px">
+<img src="screenshots/1.jpg" alt="Screen 1" width="33%">
+<img src="screenshots/2.jpg" alt="Screen 2" width="33%">
+<img src="screenshots/3.jpg" alt="Screen 3" width="33%">
 
 ### Contributing
 Please feel free report bugs and add any ideas you like!
